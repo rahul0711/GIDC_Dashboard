@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:strokeColor="#E8EEF8"
+    app:strokeWidth="1dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- 🔹 TOP ROW: Complaint ID + Eye Icon -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/tvComplaintId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Complaint ID : 12345"
+                android:textSize="15sp"
+                android:textColor="#0B3D91"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:id="@+id/ivView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/ic_menu_view"/>
+        </LinearLayout>
+
+        <!-- 🔹 DIVIDER -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EEF2FC"
+            android:layout_marginBottom="10dp"/>
+
+        <!-- 🔹 Booking Time -->
+        <TextView
+            android:id="@+id/tvBookingTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Booking Time : 2025-08-11 11:58:58"
+            android:textSize="13sp"
+            android:textColor="#444444"
+            android:layout_marginBottom="6dp"/>
+
+        <!-- 🔹 Subtype -->
+        <TextView
+            android:id="@+id/tvSubtype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Subtype : Water Supply"
+            android:textSize="13sp"
+            android:textColor="#444444"
+            android:layout_marginBottom="6dp"/>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

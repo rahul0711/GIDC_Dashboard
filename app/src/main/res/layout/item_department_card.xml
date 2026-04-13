@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    app:rippleColor="#1A0B3D91"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <!--
+            DEPARTMENT ICON
+            ─────────────────────────────────────────────────
+            Set dynamically in RecyclerView adapter:
+                holder.binding.ivDeptIcon.setImageResource(dept.iconRes)
+
+            Recommended icon size: 48x48dp vector drawable
+            Icon tint is set to brand blue (#0B3D91)
+            ─────────────────────────────────────────────────
+        -->
+        <ImageView
+            android:id="@+id/ivDeptIcon"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:src="@drawable/logo"
+            android:contentDescription="Department Icon"
+            android:scaleType="fitCenter"
+            app:tint="@null"/>
+
+        <!--
+            DEPARTMENT NAME
+            ─────────────────────────────────────────────────
+            Set dynamically:
+                holder.binding.tvDeptName.text = dept.name
+            ─────────────────────────────────────────────────
+        -->
+        <TextView
+            android:id="@+id/tvDeptName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Street Light Department"
+            android:textColor="#0B1F4B"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium" />
+
+        <!--
+            NOT RESOLVED COUNT
+            ─────────────────────────────────────────────────
+            Set dynamically:
+                holder.binding.tvNotResolved.text =
+                    "( Not Resolved -${dept.unresolvedCount})"
+            ─────────────────────────────────────────────────
+        -->
+
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

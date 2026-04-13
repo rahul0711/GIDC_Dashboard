@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MyGIDC" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- Your main brand color -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorSecondary">@color/blue</item>
+
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">@color/blue_dark</item>
+
+    </style>
+</resources>

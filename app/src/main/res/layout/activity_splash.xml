@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A3A6E">
+
+    <!-- Top accent strip — Script India blue -->
+    <View
+        android:id="@+id/accentTop"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="#1565C0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Bottom accent strip -->
+    <View
+        android:id="@+id/accentBottom"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="#1565C0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- White card behind logo -->
+    <View
+        android:id="@+id/logoCard"
+        android:layout_width="240dp"
+        android:layout_height="68dp"
+        android:background="@drawable/splash_logo_card"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.38" />
+
+    <!-- Logo -->
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="210dp"
+        android:layout_height="52dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo"
+        android:contentDescription="Script India Logo"
+        app:layout_constraintBottom_toBottomOf="@+id/logoCard"
+        app:layout_constraintEnd_toEndOf="@+id/logoCard"
+        app:layout_constraintStart_toStartOf="@+id/logoCard"
+        app:layout_constraintTop_toTopOf="@+id/logoCard" />
+
+    <!-- Divider under logo -->
+    <View
+        android:id="@+id/logoDivider"
+        android:layout_width="40dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="20dp"
+        android:background="#40FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoCard" />
+
+    <!-- Authority name -->
+    <TextView
+        android:id="@+id/tvAuthority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        android:lineSpacingExtra="5dp"
+        android:text="GIDC NOTIFIED AREA AUTHORITY\nVAPI, GUJARAT"
+        android:textColor="#AABBD8"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoDivider" />
+
+    <!-- Progress bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="160dp"
+        android:layout_height="3dp"
+        android:layout_marginBottom="36dp"
+        android:indeterminate="true"
+        android:indeterminateTint="#FFFFFF"
+        android:progressTint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/poweredBy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Powered by — mirrors Script India logo style -->
+    <LinearLayout
+        android:id="@+id/poweredBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Powered by  "
+            android:textColor="#55FFFFFF"
+            android:textSize="10sp"
+            android:letterSpacing="0.08" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SCRIPT"
+            android:textColor="#CCFFFFFF"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.16" />
+
+        <!-- Blue block for INDIA — exact mirror of logo -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:background="#1565C0"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:text="INDIA"
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.14" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="0dp"
+    app:cardPreventCornerOverlap="true">
+
+    <!-- Thin border via inner view -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dept_card_border"
+        android:paddingStart="14dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="12dp">
+
+        <!-- Icon container -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvDeptIcon"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#EEF2F8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivDeptIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:contentDescription="Department icon"
+               />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Department name -->
+        <TextView
+            android:id="@+id/tvDeptName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Civil Engineering"
+            android:textColor="#1A2340"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/tvStaffBadge"
+            app:layout_constraintStart_toEndOf="@id/cvDeptIcon"
+            app:layout_constraintTop_toTopOf="@id/cvDeptIcon" />
+
+        <!-- Subtitle -->
+        <TextView
+            android:id="@+id/tvDeptSub"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="3dp"
+            android:fontFamily="sans-serif"
+            android:text="Infrastructure AND Planning"
+            android:textColor="#8898AA"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@id/cvDeptIcon"
+            app:layout_constraintEnd_toStartOf="@id/tvStaffBadge"
+            app:layout_constraintStart_toEndOf="@id/cvDeptIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvDeptName" />
+
+        <!-- Staff count badge -->
+        <TextView
+            android:id="@+id/tvStaffBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/badge_blue_bg"
+            android:fontFamily="sans-serif-medium"
+            android:paddingStart="9dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="9dp"
+            android:paddingBottom="3dp"
+            android:text="24 Staff"
+            android:textColor="#185FA5"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivArrow"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Arrow chevron -->
+        <ImageView
+            android:id="@+id/ivArrow"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:background="@drawable/arrow_bg"
+            android:padding="7dp"
+            android:src="@drawable/ic_chevron_right"
+            android:contentDescription="Open department"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
