@@ -3,13 +3,12 @@ package com.example.mygidc.dashboard
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mygidc.R
 import com.example.mygidc.model.Department
 import com.example.mygidc.settings.LogoutActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -25,11 +24,6 @@ class AdminDashboardActivity : AppCompatActivity() {
         // ── Retrieve intent extras ──────────────────────────────────────────
         agencyId = intent.getIntExtra("agencyId", 0)
         role     = intent.getStringExtra("role") ?: ""
-
-        // ── Toolbar ─────────────────────────────────────────────────────────
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)   // title set in XML
 
         // ── RecyclerView / Departments ───────────────────────────────────────
         val recyclerView = findViewById<RecyclerView>(R.id.rvDepartments)
@@ -52,31 +46,7 @@ class AdminDashboardActivity : AppCompatActivity() {
             }
         }
 
-        // ── Bottom Navigation ────────────────────────────────────────────────
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
-
-        // Keep "Home" selected by default
-        bottomNav.selectedItemId = R.id.nav_home
-
-        bottomNav.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-
-                R.id.nav_home -> {
-                    // Already on this screen — optionally scroll RecyclerView to top
-                    recyclerView.smoothScrollToPosition(0)
-                    true
-                }
-
-                R.id.nav_settings -> {
-                    openLogout()
-                    // Do NOT mark it as selected — reset to home visually
-                    bottomNav.selectedItemId = R.id.nav_home
-                    false           // returning false keeps the old item highlighted
-                }
-
-                else -> false
-            }
-        }
+        findViewById<MaterialButton>(R.id.btnLogout).setOnClickListener { openLogout() }
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────

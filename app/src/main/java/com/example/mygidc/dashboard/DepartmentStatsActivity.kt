@@ -1,13 +1,19 @@
 package com.example.mygidc.dashboard
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mygidc.R
 import com.example.mygidc.api.RetrofitClient
+import com.example.mygidc.settings.LogoutActivity
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.*
 
@@ -16,6 +22,17 @@ class DepartmentStatsActivity : AppCompatActivity() {
     private var deptId: Int = 0
     private var agencyId: Int = 0
     private var role: String = ""
+    private val mainHandler = Handler(Looper.getMainLooper())
+
+    private val complaintListLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val updated = result.data?.getBooleanExtra("complaint_updated", false) == true
+                if (updated) {
+                    refreshStatsNow()
+                }
+            }
+        }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,6 +118,31 @@ class DepartmentStatsActivity : AppCompatActivity() {
         findViewById<MaterialCardView>(R.id.cardResolveCount).setOnClickListener {
             openComplaintList("resolveCount", ComplaintDetailActivity.SOURCE_ALERT_RESOLVE)
         }
+
+        findViewById<MaterialButton>(R.id.btnLogout).setOnClickListener { openLogout() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Safety net: if backend changed while away, refresh counts immediately.
+        refreshStatsNow()
+    }
+
+    private fun refreshStatsNow() {
+        fetchStats()
+        // Some backends update counters asynchronously; a short follow-up refresh
+        // makes the UI feel instant even under eventual consistency.
+        mainHandler.removeCallbacksAndMessages(null)
+        mainHandler.postDelayed({ fetchStats() }, 600)
+    }
+
+    private fun openLogout() {
+        val intent = Intent(this, LogoutActivity::class.java).apply {
+            putExtra("role", role)
+            putExtra("agencyId", agencyId)
+        }
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -137,7 +179,12 @@ class DepartmentStatsActivity : AppCompatActivity() {
     private fun fetchStats() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RetrofitClient.api.getStatsByDepartment(deptId)
+                val roleLower = role.trim().lowercase()
+                val response = if (roleLower.contains("agency")) {
+                    RetrofitClient.api.getStatsByAgency(agencyId, deptId)
+                } else {
+                    RetrofitClient.api.getStatsByDepartment(deptId)
+                }
                 val data = if (response.isSuccessful) response.body() else null
 
                 withContext(Dispatchers.Main) {
@@ -167,6 +214,6 @@ class DepartmentStatsActivity : AppCompatActivity() {
         intent.putExtra("agencyId",     agencyId)
         intent.putExtra("role",         role)
         intent.putExtra("source",       source)
-        startActivity(intent)
+        complaintListLauncher.launch(intent)
     }
 }

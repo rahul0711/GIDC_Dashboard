@@ -17,7 +17,8 @@ class ComplaintAdapter(
     private var list: MutableList<ComplaintModel>,
     private val role: String = "",
     private val status: String = "",
-    private val source: String = ComplaintDetailActivity.SOURCE_STATUS
+    private val source: String = ComplaintDetailActivity.SOURCE_STATUS,
+    private val onItemClick: (ComplaintModel) -> Unit
 ) : RecyclerView.Adapter<ComplaintAdapter.ViewHolder>() {
 
     private var fullList: MutableList<ComplaintModel> = ArrayList(list)
@@ -52,19 +53,15 @@ class ComplaintAdapter(
         holder.tvBookingTime.text = "Booking Time : ${item.callStartTime ?: "N/A"}"
         holder.tvSubtype.text     = "Subtype : ${item.complainSubType ?: "N/A"}"
 
-        val clickListener = View.OnClickListener {
-            val context = holder.itemView.context
-            val intent = Intent(context, ComplaintDetailActivity::class.java).apply {
-                putExtra("complaint", Gson().toJson(item))
-                putExtra("role", role)
-                putExtra("status", status)
-                putExtra("source", source)
-            }
-            context.startActivity(intent)
-        }
+        val clickListener = View.OnClickListener { onItemClick(item) }
 
         holder.itemView.setOnClickListener(clickListener)
         holder.ivView.setOnClickListener(clickListener)
+    }
+
+    fun updateData(newList: List<ComplaintModel>) {
+        fullList = ArrayList(newList)
+        applyFilters()
     }
 
     // 🔹 FILTER BY ID

@@ -65,6 +65,8 @@ class LoginActivity : AppCompatActivity() {
                             .putBoolean("isLoggedIn", true)
                             .putString("role", data.type)
                             .putLong("userId", data.userID)
+                            .putString("userName", data.userName)
+                            .putString("departmentName", data.departmentName ?: "")
                             .apply()
 
                         val deptJson = Gson().toJson(data.listDepartmentMaster)

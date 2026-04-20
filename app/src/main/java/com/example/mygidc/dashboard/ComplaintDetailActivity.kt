@@ -1,6 +1,7 @@
 package com.example.mygidc.dashboard
 
 import android.app.AlertDialog
+import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.Color
 import android.media.AudioAttributes
@@ -14,9 +15,12 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
+import coil.load
 import com.example.mygidc.R
 import com.example.mygidc.api.RetrofitClient
 import com.example.mygidc.model.ApprovedResolvedComplainRequest
@@ -26,6 +30,14 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
+import java.io.FileOutputStream
+import coil.ImageLoader
 
 class ComplaintDetailActivity : AppCompatActivity() {
 
@@ -33,6 +45,26 @@ class ComplaintDetailActivity : AppCompatActivity() {
 
     // ── Single shared audio player manager ────────────────────────────────────
     private var audioPlayer: AudioPlayerManager? = null
+
+    private var selectedResolvedImageUri: Uri? = null
+    private var cameraImageUri: Uri? = null
+    private lateinit var trustedImageLoader: ImageLoader
+    private val pickResolvedImage =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            selectedResolvedImageUri = uri
+            updateSelectedImageUi()
+        }
+
+    private val takeResolvedPhoto =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                selectedResolvedImageUri = cameraImageUri
+            } else {
+                // If user cancels camera, don't keep a stale uri
+                if (selectedResolvedImageUri == cameraImageUri) selectedResolvedImageUri = null
+            }
+            updateSelectedImageUi()
+        }
 
     companion object {
         const val SOURCE_ALERT_RESOLVE = "alert_resolve"
@@ -321,7 +353,10 @@ class ComplaintDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_complaint_detail)
-
+        trustedImageLoader = ImageLoader.Builder(this)
+            .okHttpClient(RetrofitClient.okHttpClient) // ✅ same client, same SSL trust
+            .crossfade(true)
+            .build()
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -436,6 +471,8 @@ class ComplaintDetailActivity : AppCompatActivity() {
         setText(R.id.tvEngAgencyId,    item.agencyId             ?: "-")
         setText(R.id.tvEngAgency,      item.agency               ?: "Not Assigned")
 
+        bindResolvedPhotoForEngineer(item)
+
         findViewById<View>(R.id.rowEngAgencyId)?.visibility = View.VISIBLE
         findViewById<View>(R.id.rowEngAgency)?.visibility   = View.VISIBLE
 
@@ -480,6 +517,60 @@ class ComplaintDetailActivity : AppCompatActivity() {
             tvCurrentTimeId = R.id.tvEngCurrentTime,
             tvTotalTimeId   = R.id.tvEngTotalTime
         )
+    }
+
+    private fun bindResolvedPhotoForEngineer(item: ComplaintModel) {
+        val row    = findViewById<View>(R.id.rowEngResolvedPhoto)     ?: return
+        val iv     = findViewById<ImageView>(R.id.ivEngResolvedPhoto) ?: return
+//        val tvName = findViewById<TextView>(R.id.tvEngResolvedPhotoName) ?: return
+
+        val s = (item.status ?: "").trim().lowercase()
+        val hasPhoto = (s == "resolved" || s == "cancel") && !item.resolvedPhoto.isNullOrBlank()
+
+        if (!hasPhoto) {
+            row.visibility = View.GONE
+            return
+        }
+
+        row.visibility    = View.VISIBLE
+        iv.visibility     = View.VISIBLE
+
+
+        val fileName = item.resolvedPhoto!!.trim()
+        val url = resolvedPhotoUrl(fileName)
+
+        Log.d(TAG, "Loading resolved photo from: $url")
+
+        // Show loading placeholder text
+
+
+        iv.load(url, trustedImageLoader) {  // ✅ pass the loader here
+            crossfade(true)
+            listener(
+                onSuccess = { _, _ ->
+
+                    Log.d(TAG, "Image loaded OK: $url")
+                },
+                onError = { _, errorResult ->
+                    Log.e(TAG, "Image load failed: ${errorResult.throwable.message}")
+                    iv.visibility = View.GONE
+
+                }
+            )
+        }
+
+        // Remove click listener — no interaction wanted
+        iv.isClickable  = false
+        iv.isFocusable  = false
+        iv.setOnClickListener(null)
+    }
+
+    private fun resolvedPhotoUrl(resolvedPhoto: String): String {
+        val trimmed = resolvedPhoto.trim()
+        if (trimmed.startsWith("http://", true) || trimmed.startsWith("https://", true)) return trimmed
+        val url = "https://demo.scriptindia.in:8032/ResolvedImages/$trimmed"
+        Log.d(TAG, "Constructed resolved photo URL: $url")
+        return url
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -535,6 +626,37 @@ class ComplaintDetailActivity : AppCompatActivity() {
         val etNotes = findViewById<TextInputEditText>(R.id.etAgcNotes)
         etNotes?.setText(item.complainSpecialNotes ?: "")
 
+        val rowResolvedImage = findViewById<View>(R.id.rowAgcResolvedImage)
+        val btnUploadImage = findViewById<MaterialButton>(R.id.btnAgcUploadImage)
+        btnUploadImage?.setOnClickListener {
+            showImageSourceChooser()
+        }
+
+        fun shouldRequireImage(selected: String): Boolean {
+            val s = selected.trim().lowercase()
+            return s == "resolved" || s == "cancel"
+        }
+
+        fun refreshImageVisibility() {
+            val selectedStatus = spinner?.selectedItem?.toString() ?: ""
+            val require = shouldRequireImage(selectedStatus)
+            rowResolvedImage?.visibility = if (require) View.VISIBLE else View.GONE
+            if (!require) {
+                selectedResolvedImageUri = null
+                updateSelectedImageUi()
+            }
+        }
+
+        spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                refreshImageVisibility()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                refreshImageVisibility()
+            }
+        }
+        refreshImageVisibility()
+
         val btnUpdate = findViewById<MaterialButton>(R.id.btnAgcUpdate)
         btnUpdate?.setOnClickListener {
             val selectedStatus = spinner?.selectedItem?.toString() ?: "Hold"
@@ -544,7 +666,13 @@ class ComplaintDetailActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please enter notes before updating", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            updateComplaint(item.complainFormID, agencyId, selectedStatus, notes)
+
+            if (shouldRequireImage(selectedStatus) && selectedResolvedImageUri == null) {
+                Toast.makeText(this, "Please upload image for $selectedStatus", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            updateComplaintMultipart(item, agencyId, selectedStatus, notes, selectedResolvedImageUri)
         }
 
         findViewById<MaterialButton>(R.id.btnAgcCall)?.setOnClickListener {
@@ -731,6 +859,7 @@ class ComplaintDetailActivity : AppCompatActivity() {
                         "Complaint #${item.complainFormID} approved!",
                         Toast.LENGTH_SHORT
                     ).show()
+                    setResult(RESULT_OK, Intent().putExtra("complaint_updated", true))
                     finish()
                 } else {
                     Log.e(TAG, "Approve failed: ${response.code()} — ${response.errorBody()?.string()}")
@@ -776,6 +905,7 @@ class ComplaintDetailActivity : AppCompatActivity() {
                         "Complaint updated successfully!",
                         Toast.LENGTH_SHORT
                     ).show()
+                    setResult(RESULT_OK, Intent().putExtra("complaint_updated", true))
                     finish()
                 } else {
                     Log.e(TAG, "Update failed: ${response.code()} — ${response.errorBody()?.string()}")
@@ -795,6 +925,153 @@ class ComplaintDetailActivity : AppCompatActivity() {
             } finally {
                 btnUpdate?.isEnabled = true; btnUpdate?.text = "Update Complaint"
             }
+        }
+    }
+
+    private fun updateComplaintMultipart(
+        item: ComplaintModel,
+        agencyId: String,
+        status: String,
+        notes: String,
+        imageUri: Uri?
+    ) {
+        val btnUpdate = findViewById<MaterialButton>(R.id.btnAgcUpdate)
+        btnUpdate?.isEnabled = false; btnUpdate?.text = "Updating…"
+
+        val textPlain = "text/plain".toMediaType()
+        fun t(value: String): RequestBody = value.toRequestBody(textPlain)
+
+        val complainFormID = t(item.complainFormID.toString())
+        val agencyIdBody = t(agencyId)
+        val statusBody = t(status)
+        val callDurationBody = t(item.callDuration ?: "0")
+        val complainTypeBody = t(item.complainType ?: "")
+        val callStartTimeBody = t(item.callStartTime ?: "")
+        val callMobileNumberBody = t(item.callMobileNumber ?: "")
+        val callRecordingLinkBody = t(item.callRecordingLink ?: "")
+        val complainSpecialNotesBody = t(notes)
+
+        val imagePart: MultipartBody.Part? = try {
+            imageUri?.let { uri ->
+                val tmp = copyUriToTempFile(contentResolver, uri, "resolved_${item.complainFormID}")
+                val mediaType = contentResolver.getType(uri)?.toMediaType() ?: "image/*".toMediaType()
+                val body = tmp.asRequestBody(mediaType)
+                MultipartBody.Part.createFormData("ComplainResolvedImage", tmp.name, body)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Image prepare failed: ${e.message}", e)
+            null
+        }
+
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.updateComplainMultipart(
+                    complainFormID = complainFormID,
+                    agencyId = agencyIdBody,
+                    status = statusBody,
+                    callDuration = callDurationBody,
+                    complainType = complainTypeBody,
+                    callStartTime = callStartTimeBody,
+                    callMobileNumber = callMobileNumberBody,
+                    callRecordingLink = callRecordingLinkBody,
+                    complainSpecialNotes = complainSpecialNotesBody,
+                    complainResolvedImage = imagePart
+                )
+
+                if (response.isSuccessful) {
+                    Toast.makeText(
+                        this@ComplaintDetailActivity,
+                        "Complaint updated successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    setResult(RESULT_OK, Intent().putExtra("complaint_updated", true))
+                    finish()
+                } else {
+                    Log.e(TAG, "Multipart update failed: ${response.code()} — ${response.errorBody()?.string()}")
+                    Toast.makeText(
+                        this@ComplaintDetailActivity,
+                        "Update failed: ${response.code()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Multipart update exception: ${e.message}", e)
+                Toast.makeText(
+                    this@ComplaintDetailActivity,
+                    "Error: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } finally {
+                btnUpdate?.isEnabled = true; btnUpdate?.text = "Update Complaint"
+            }
+        }
+    }
+
+    private fun copyUriToTempFile(resolver: ContentResolver, uri: Uri, prefix: String): File {
+        val ext = when (resolver.getType(uri)?.lowercase()) {
+            "image/png" -> ".png"
+            "image/webp" -> ".webp"
+            else -> ".jpg"
+        }
+        val outFile = File(cacheDir, "${prefix}_${System.currentTimeMillis()}$ext")
+        resolver.openInputStream(uri).use { input ->
+            requireNotNull(input) { "Unable to open image" }
+            FileOutputStream(outFile).use { output ->
+                input.copyTo(output)
+            }
+        }
+        return outFile
+    }
+
+    private fun updateSelectedImageUi() {
+        val tv = findViewById<TextView>(R.id.tvAgcSelectedImage) ?: return
+        val uri = selectedResolvedImageUri
+        if (uri == null) {
+            tv.text = "No image selected"
+            tv.setTextColor(Color.parseColor("#9AAAC4"))
+            return
+        }
+
+        val name = try {
+            val cursor = contentResolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME), null, null, null)
+            cursor?.use {
+                val idx = it.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                if (it.moveToFirst() && idx >= 0) it.getString(idx) else null
+            }
+        } catch (_: Exception) { null }
+
+        tv.text = name ?: uri.lastPathSegment ?: "Image selected"
+        tv.setTextColor(Color.parseColor("#1A1A2E"))
+    }
+
+    private fun showImageSourceChooser() {
+        val options = arrayOf("Gallery", "Camera")
+        AlertDialog.Builder(this)
+            .setTitle("Upload Image")
+            .setItems(options) { dialog, which ->
+                dialog.dismiss()
+                when (which) {
+                    0 -> pickResolvedImage.launch("image/*")
+                    1 -> launchCameraCapture()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun launchCameraCapture() {
+        try {
+            val imageFile = File(cacheDir, "camera_${System.currentTimeMillis()}.jpg")
+            val uri = FileProvider.getUriForFile(
+                this,
+                "${applicationContext.packageName}.fileprovider",
+                imageFile
+            )
+            cameraImageUri = uri
+            takeResolvedPhoto.launch(uri)
+        } catch (e: Exception) {
+            Log.e(TAG, "Camera launch failed: ${e.message}", e)
+            Toast.makeText(this, "Unable to open camera: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 

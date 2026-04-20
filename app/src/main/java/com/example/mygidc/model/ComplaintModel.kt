@@ -74,5 +74,8 @@ data class ComplaintModel(
     val departmentId: String? = null,
 
     @SerializedName("agencyPhoneno")
-    val agencyPhoneno: String? = null
+    val agencyPhoneno: String? = null,
+
+    @SerializedName("resolvedPhoto")
+    val resolvedPhoto: String? = null
 )

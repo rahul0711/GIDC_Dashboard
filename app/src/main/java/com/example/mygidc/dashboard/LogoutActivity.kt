@@ -17,11 +17,8 @@ class LogoutActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_logout)
 
-        val rawRole = intent.getStringExtra("role")
-        val role = formatRole(rawRole)
-
         setupToolbar()
-        bindProfileCard(role)
+        bindProfileCard()
 
         findViewById<MaterialButton>(R.id.btnLogout).setOnClickListener {
             showLogoutConfirmation()
@@ -53,17 +50,25 @@ class LogoutActivity : AppCompatActivity() {
         }
     }
 
-    private fun bindProfileCard(role: String) {
-        val initials = role
+    private fun bindProfileCard() {
+        val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        val userName = prefs.getString("userName", null)?.trim().orEmpty()
+        val department = prefs.getString("departmentName", null)?.trim().orEmpty()
+
+        val displayName = userName.ifEmpty { formatRole(intent.getStringExtra("role")) }
+        findViewById<TextView>(R.id.tvUserName).text = displayName
+        findViewById<TextView>(R.id.tvDepartment).text =
+            department.ifEmpty { "—" }
+
+        val initialsSource = userName.ifEmpty { displayName }
+        val initials = initialsSource
             .split(" ")
             .filter { it.isNotEmpty() }
             .take(2)
             .joinToString("") { it.first().uppercaseChar().toString() }
 
         findViewById<TextView>(R.id.tvAvatarInitials).text =
-            if (initials.isEmpty()) "DE" else initials
-
-        findViewById<TextView>(R.id.tvUserName).text = role
+            if (initials.isEmpty()) "U" else initials
     }
 
     private fun showLogoutConfirmation() {
