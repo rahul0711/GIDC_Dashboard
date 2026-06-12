@@ -1,4 +1,4 @@
-package com.GIDC.app
+package com.ScriptIndia.GIDC_CMS_APP
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.GIDC.app.api.RetrofitClient
-import com.GIDC.app.dashboard.*
-import com.GIDC.app.model.LoginRequest
+import com.ScriptIndia.GIDC_CMS_APP.api.RetrofitClient
+import com.ScriptIndia.GIDC_CMS_APP.dashboard.*
+import com.ScriptIndia.GIDC_CMS_APP.model.LoginRequest
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.*
 import com.google.gson.Gson

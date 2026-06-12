@@ -149,14 +149,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
                 app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E4EAF5"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <!-- Card heading -->
                     <TextView
@@ -164,16 +166,16 @@
                         android:layout_height="wrap_content"
                         android:text="TREND ANALYSIS"
                         android:textColor="#8C99AF"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Complaints vs Resolved"
+                        android:text="Complaints, Approved, Canceled"
                         android:textColor="#1B2D4F"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -184,83 +186,185 @@
                         android:textColor="#8B97AD"
                         android:textSize="12sp" />
 
-                    <!-- Date picker + Department spinner row -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal">
+                        android:text="DATE"
+                        android:textColor="#8C99AF"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
 
-                        <!-- Date picker pill -->
-                        <LinearLayout
-                            android:id="@+id/layoutDatePicker"
+                    <LinearLayout
+                        android:id="@+id/layoutDatePicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_date_pill"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:contentDescription="Select date"
+                            android:src="@android:drawable/ic_menu_today"
+                            app:tint="#0B3D91" />
+
+                        <TextView
+                            android:id="@+id/tvSelectedDate"
                             android:layout_width="0dp"
-                            android:layout_height="52dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
                             android:layout_weight="1"
-                            android:background="@drawable/bg_date_pill"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp">
+                            android:singleLine="true"
+                            android:text="Choose date"
+                            android:textColor="#0B3D91"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
 
-                            <ImageView
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:contentDescription="Select date"
-                                android:src="@android:drawable/ic_menu_today"
-                                app:tint="#0B3D91" />
-
-                            <TextView
-                                android:id="@+id/tvSelectedDate"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_weight="1"
-                                android:singleLine="true"
-                                android:text="Choose date"
-                                android:textColor="#0B3D91"
-                                android:textSize="13sp"
-                                android:textStyle="bold" />
-
-                            <ImageView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:contentDescription="Open date picker"
-                                android:src="@android:drawable/arrow_down_float"
-                                app:tint="#4A6799" />
-                        </LinearLayout>
-
-                        <!-- Department spinner -->
-                        <FrameLayout
-                            android:layout_width="0dp"
-                            android:layout_height="52dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="1">
-
-                            <Spinner
-                                android:id="@+id/spinnerDepartment"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/spinner_background"
-                                android:dropDownWidth="match_parent"
-                                android:gravity="center_vertical"
-                                android:paddingStart="12dp"
-                                android:paddingEnd="34dp"
-                                android:spinnerMode="dropdown" />
-
-                            <ImageView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:layout_gravity="end|center_vertical"
-                                android:layout_marginEnd="12dp"
-                                android:clickable="false"
-                                android:contentDescription="Department dropdown"
-                                android:focusable="false"
-                                android:src="@android:drawable/arrow_down_float"
-                                app:tint="#4A6799" />
-                        </FrameLayout>
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:contentDescription="Open date picker"
+                            android:src="@android:drawable/arrow_down_float"
+                            app:tint="#4A6799" />
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="FROM DATE"
+                        android:textColor="#8C99AF"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutFromDatePicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_date_pill"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:contentDescription="Select from date"
+                            android:src="@android:drawable/ic_menu_today"
+                            app:tint="#0B3D91" />
+
+                        <TextView
+                            android:id="@+id/tvFromDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:text="From date"
+                            android:textColor="#0B3D91"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:contentDescription="Open from date picker"
+                            android:src="@android:drawable/arrow_down_float"
+                            app:tint="#4A6799" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="TO DATE"
+                        android:textColor="#8C99AF"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutToDatePicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_date_pill"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:contentDescription="Select to date"
+                            android:src="@android:drawable/ic_menu_today"
+                            app:tint="#0B3D91" />
+
+                        <TextView
+                            android:id="@+id/tvToDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:text="To date"
+                            android:textColor="#0B3D91"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:contentDescription="Open to date picker"
+                            android:src="@android:drawable/arrow_down_float"
+                            app:tint="#4A6799" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="DEPARTMENT"
+                        android:textColor="#8C99AF"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="6dp">
+
+                        <Spinner
+                            android:id="@+id/spinnerDepartment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/spinner_background"
+                            android:popupBackground="@drawable/bg_spinner_popup"
+                            android:dropDownVerticalOffset="52dp"
+                            android:dropDownWidth="match_parent"
+                            android:gravity="center_vertical"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="34dp"
+                            android:spinnerMode="dropdown" />
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginEnd="12dp"
+                            android:clickable="false"
+                            android:contentDescription="Department dropdown"
+                            android:focusable="false"
+                            android:src="@android:drawable/arrow_down_float"
+                            app:tint="#4A6799" />
+                    </FrameLayout>
 
                     <!-- DATE RANGE label -->
                     <TextView
@@ -320,7 +424,7 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- Complaints / Resolved / Both toggle -->
+                    <!-- Complaints / Approved / Canceled toggle -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="42dp"
@@ -343,26 +447,26 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/btnViewResolved"
+                            android:id="@+id/btnViewApproved"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="4dp"
                             android:layout_weight="1"
                             android:background="#EEF2FF"
                             android:gravity="center"
-                            android:text="Resolved"
+                            android:text="Approved"
                             android:textColor="#8898AA"
                             android:textSize="12sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/btnViewBoth"
+                            android:id="@+id/btnViewCanceled"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="#EEF2FF"
                             android:gravity="center"
-                            android:text="Both"
+                            android:text="Canceled"
                             android:textColor="#8898AA"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -403,13 +507,23 @@
                         straight polyline between every data point.
                         ══════════════════════════════════════════════
                     -->
-                    <com.example.mygidc.dashboard.LineChartView
-                        android:id="@+id/lineChart"
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:background="#FAFCFF"
-                        android:padding="8dp"
-                        android:visibility="gone" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        app:cardBackgroundColor="#FAFCFF"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="#E4EAF5"
+                        app:strokeWidth="1dp">
+
+                        <com.ScriptIndia.GIDC_CMS_APP.dashboard.LineChartView
+                            android:id="@+id/lineChart"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:padding="10dp"
+                            android:visibility="gone" />
+                    </com.google.android.material.card.MaterialCardView>
 
                     <!-- Legend -->
                     <LinearLayout
@@ -444,7 +558,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/legendResolved"
+                            android:id="@+id/legendApproved"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
@@ -459,7 +573,51 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Resolved"
+                                android:text="Approved"
+                                android:textColor="#4A5670"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/legendCanceled"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginEnd="6dp"
+                                android:background="#F59E0B" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Canceled"
+                                android:textColor="#4A5670"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/legendTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginEnd="6dp"
+                                android:background="#0B3D91" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total"
                                 android:textColor="#4A5670"
                                 android:textSize="12sp" />
                         </LinearLayout>
@@ -472,13 +630,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
                         android:orientation="horizontal"
+                        android:weightSum="4"
                         android:visibility="gone">
 
                         <LinearLayout
                             android:id="@+id/summaryComplaints"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
                             android:layout_weight="1"
                             android:background="#F1F5FF"
                             android:orientation="vertical"
@@ -487,9 +645,11 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TOTAL COMPLAINTS"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="COMPLAINTS"
                                 android:textColor="#8390A6"
-                                android:textSize="10sp"
+                                android:textSize="9sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -499,15 +659,14 @@
                                 android:layout_marginTop="4dp"
                                 android:text="--"
                                 android:textColor="#0B3D91"
-                                android:textSize="28sp"
+                                android:textSize="24sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/summaryResolved"
+                            android:id="@+id/summaryApproved"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:background="#FFF1F6"
                             android:orientation="vertical"
@@ -516,19 +675,81 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="TOTAL RESOLVED"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="APPROVED"
                                 android:textColor="#8390A6"
-                                android:textSize="10sp"
+                                android:textSize="9sp"
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/tvTotalResolved"
+                                android:id="@+id/tvTotalApproved"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:text="--"
                                 android:textColor="#FF4F87"
-                                android:textSize="28sp"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/summaryCanceled"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#FFF7E8"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="CANCELED"
+                                android:textColor="#8390A6"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvTotalCanceled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="--"
+                                android:textColor="#F59E0B"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/summaryTotal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#EEF2FF"
+                            android:orientation="vertical"
+                            android:padding="14dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="TOTAL"
+                                android:textColor="#8390A6"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvTotalCombined"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="--"
+                                android:textColor="#0B3D91"
+                                android:textSize="24sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>

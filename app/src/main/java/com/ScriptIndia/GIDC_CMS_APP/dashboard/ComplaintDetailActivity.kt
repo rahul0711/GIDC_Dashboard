@@ -1,4 +1,4 @@
-package com.GIDC.app.dashboard
+package com.ScriptIndia.GIDC_CMS_APP.dashboard
 
 import android.app.AlertDialog
 import android.content.ContentResolver
@@ -20,11 +20,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import coil.load
-import com.GIDC.app.R
-import com.GIDC.app.api.RetrofitClient
-import com.GIDC.app.model.ApprovedResolvedComplainRequest
-import com.GIDC.app.model.ComplaintModel
-import com.GIDC.app.model.UpdateComplainRequest
+import com.ScriptIndia.GIDC_CMS_APP.R
+import com.ScriptIndia.GIDC_CMS_APP.api.RetrofitClient
+import com.ScriptIndia.GIDC_CMS_APP.model.ApprovedResolvedComplainRequest
+import com.ScriptIndia.GIDC_CMS_APP.model.ComplaintModel
+import com.ScriptIndia.GIDC_CMS_APP.model.UpdateComplainRequest
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
@@ -393,12 +393,12 @@ class ComplaintDetailActivity : AppCompatActivity() {
         Log.d(TAG, "role='$roleLower' status='$status' source='$source' alertOrResolve=$isAlertOrResolve")
 
         when {
-            roleLower == "agency" || roleLower.contains("agency") ->
-                bindAgencyView(item, isAlertOrResolve)
-            roleLower.contains("engineer") || roleLower.contains("head") ->
-                bindEngineerView(item, status, isAlertOrResolve)
-            else ->
+            roleLower.contains("admin") ->
                 bindAdminView(item, isAlertOrResolve)
+            roleLower.contains("agency") ->
+                bindAgencyView(item, isAlertOrResolve)
+            else ->
+                bindEngineerView(item, status, isAlertOrResolve)
         }
     }
 
@@ -425,6 +425,8 @@ class ComplaintDetailActivity : AppCompatActivity() {
         setText(R.id.tvAdminAgency,   item.agency   ?: "Not Assigned")
         findViewById<View>(R.id.rowAdminAgencyId)?.visibility = View.VISIBLE
         findViewById<View>(R.id.rowAdminAgency)?.visibility   = View.VISIBLE
+
+        bindResolvedPhotoForAdmin(item)
 
         findViewById<TextView>(R.id.tvAdminMobile)?.setOnClickListener {
             dialNumber(item.callMobileNumber)
@@ -530,13 +532,53 @@ class ComplaintDetailActivity : AppCompatActivity() {
         )
     }
 
+    private fun bindResolvedPhotoForAdmin(item: ComplaintModel) {
+        val row    = findViewById<View>(R.id.rowAdminResolvedPhoto)     ?: return
+        val iv     = findViewById<ImageView>(R.id.ivAdminResolvedPhoto) ?: return
+
+        val s = (item.status ?: "").trim().lowercase()
+        val hasPhoto = (s == "resolved" || s == "cancel" || s == "approved" || s == "approve") && !item.resolvedPhoto.isNullOrBlank()
+
+        if (!hasPhoto) {
+            row.visibility = View.GONE
+            return
+        }
+
+        row.visibility    = View.VISIBLE
+        iv.visibility     = View.VISIBLE
+
+        val fileName = item.resolvedPhoto!!.trim()
+        val url = resolvedPhotoUrl(fileName)
+
+        Log.d(TAG, "Loading resolved photo for admin from: $url")
+
+        iv.load(url, trustedImageLoader) {  // ✅ pass the loader here
+            crossfade(true)
+            listener(
+                onSuccess = { _, _ ->
+                    Log.d(TAG, "Admin image loaded OK: $url")
+                },
+                onError = { _, errorResult ->
+                    Log.e(TAG, "Admin image load failed: ${errorResult.throwable.message}")
+                    iv.visibility = View.GONE
+                }
+            )
+        }
+
+        iv.isClickable  = true
+        iv.isFocusable  = true
+        iv.setOnClickListener {
+            showFullScreenImage(url)
+        }
+    }
+
     private fun bindResolvedPhotoForEngineer(item: ComplaintModel) {
         val row    = findViewById<View>(R.id.rowEngResolvedPhoto)     ?: return
         val iv     = findViewById<ImageView>(R.id.ivEngResolvedPhoto) ?: return
 //        val tvName = findViewById<TextView>(R.id.tvEngResolvedPhotoName) ?: return
 
         val s = (item.status ?: "").trim().lowercase()
-        val hasPhoto = (s == "resolved" || s == "cancel") && !item.resolvedPhoto.isNullOrBlank()
+        val hasPhoto = (s == "resolved" || s == "cancel" || s == "approved" || s == "approve") && !item.resolvedPhoto.isNullOrBlank()
 
         if (!hasPhoto) {
             row.visibility = View.GONE
@@ -570,10 +612,12 @@ class ComplaintDetailActivity : AppCompatActivity() {
             )
         }
 
-        // Remove click listener — no interaction wanted
-        iv.isClickable  = false
-        iv.isFocusable  = false
-        iv.setOnClickListener(null)
+        // Open image full screen on click to allow zoom and pan
+        iv.isClickable  = true
+        iv.isFocusable  = true
+        iv.setOnClickListener {
+            showFullScreenImage(url)
+        }
     }
 
     private fun resolvedPhotoUrl(resolvedPhoto: String): String {
@@ -582,6 +626,33 @@ class ComplaintDetailActivity : AppCompatActivity() {
         val url = "https://demo.scriptindia.in:8032/ResolvedImages/$trimmed"
         Log.d(TAG, "Constructed resolved photo URL: $url")
         return url
+    }
+
+    private fun showFullScreenImage(url: String) {
+        try {
+            val dialog = android.app.Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+            dialog.setContentView(R.layout.dialog_full_screen_image)
+            
+            val zoomImageView = dialog.findViewById<ZoomableImageView>(R.id.zoomImageView)
+            val btnClose = dialog.findViewById<ImageButton>(R.id.btnCloseFullScreen)
+            
+            zoomImageView.load(url, trustedImageLoader) {
+                crossfade(true)
+            }
+            
+            zoomImageView.onSwipeDownListener = {
+                dialog.dismiss()
+            }
+            
+            btnClose.setOnClickListener {
+                dialog.dismiss()
+            }
+            
+            dialog.show()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error displaying full screen image: ${e.message}", e)
+            Toast.makeText(this, "Unable to load full screen image", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────

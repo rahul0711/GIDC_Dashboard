@@ -1,4 +1,4 @@
-package com.GIDC.app.model
+package com.ScriptIndia.GIDC_CMS_APP.model
 
 import com.google.gson.annotations.SerializedName
 

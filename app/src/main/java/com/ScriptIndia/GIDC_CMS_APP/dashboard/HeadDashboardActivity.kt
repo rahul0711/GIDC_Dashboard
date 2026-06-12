@@ -1,4 +1,4 @@
-package com.GIDC.app.dashboard
+package com.ScriptIndia.GIDC_CMS_APP.dashboard
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -15,11 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.GIDC.app.R
-import com.GIDC.app.api.RetrofitClient
-import com.GIDC.app.model.ComplaintModel
-import com.GIDC.app.model.Department
-import com.GIDC.app.settings.LogoutActivity
+import com.ScriptIndia.GIDC_CMS_APP.R
+import com.ScriptIndia.GIDC_CMS_APP.api.RetrofitClient
+import com.ScriptIndia.GIDC_CMS_APP.model.ComplaintModel
+import com.ScriptIndia.GIDC_CMS_APP.model.Department
+import com.ScriptIndia.GIDC_CMS_APP.settings.LogoutActivity
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -84,7 +84,6 @@ class HeadDashboardActivity : AppCompatActivity() {
     private lateinit var btnViewComplaints: TextView
     private lateinit var btnViewApproved:   TextView
     private lateinit var btnViewCanceled:   TextView
-    private lateinit var btnViewTotal:      TextView
     private lateinit var btnRangeDaily:     TextView
     private lateinit var btnRangeWeekly:    TextView
     private lateinit var btnRangeMonthly:   TextView
@@ -131,7 +130,6 @@ class HeadDashboardActivity : AppCompatActivity() {
         btnViewComplaints = findViewById(R.id.btnViewComplaints)
         btnViewApproved   = findViewById(R.id.btnViewApproved)
         btnViewCanceled   = findViewById(R.id.btnViewCanceled)
-        btnViewTotal      = findViewById(R.id.btnViewTotal)
         btnRangeDaily     = findViewById(R.id.btnRangeDaily)
         btnRangeWeekly    = findViewById(R.id.btnRangeWeekly)
         btnRangeMonthly   = findViewById(R.id.btnRangeMonthly)
@@ -318,8 +316,7 @@ class HeadDashboardActivity : AppCompatActivity() {
             listOf(
                 btnViewComplaints to ViewMode.COMPLAINTS,
                 btnViewApproved   to ViewMode.APPROVED,
-                btnViewCanceled   to ViewMode.CANCELED,
-                btnViewTotal      to ViewMode.TOTAL
+                btnViewCanceled   to ViewMode.CANCELED
             ).forEach { (btn, mode) ->
                 if (mode == selected) {
                     val activeColor = when (mode) {
@@ -346,7 +343,6 @@ class HeadDashboardActivity : AppCompatActivity() {
         btnViewComplaints.setOnClickListener { applyMode(ViewMode.COMPLAINTS) }
         btnViewApproved.setOnClickListener   { applyMode(ViewMode.APPROVED)   }
         btnViewCanceled.setOnClickListener   { applyMode(ViewMode.CANCELED)   }
-        btnViewTotal.setOnClickListener      { applyMode(ViewMode.TOTAL)      }
 
         // Default: Complaints
         applyMode(ViewMode.COMPLAINTS)

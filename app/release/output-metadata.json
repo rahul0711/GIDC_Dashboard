@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.mygidc",
+  "applicationId": "com.ScriptIndia.GIDC_CMS_APP",
   "variantName": "release",
   "elements": [
     {

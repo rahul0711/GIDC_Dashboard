@@ -1,4 +1,4 @@
-package com.GIDC.app.dashboard
+package com.ScriptIndia.GIDC_CMS_APP.dashboard
 
 import android.os.Bundle
 import android.util.Log
@@ -12,8 +12,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.GIDC.app.R
-import com.GIDC.app.api.RetrofitClient
+import com.ScriptIndia.GIDC_CMS_APP.R
+import com.ScriptIndia.GIDC_CMS_APP.api.RetrofitClient
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText

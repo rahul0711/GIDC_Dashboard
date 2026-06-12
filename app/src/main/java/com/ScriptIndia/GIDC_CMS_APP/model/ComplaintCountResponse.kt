@@ -1,4 +1,4 @@
-package com.GIDC.app.model
+package com.ScriptIndia.GIDC_CMS_APP.model
 
 data class ComplaintCountResponse(
     val new: Int,

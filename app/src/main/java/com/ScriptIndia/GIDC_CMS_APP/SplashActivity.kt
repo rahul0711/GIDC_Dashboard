@@ -1,11 +1,11 @@
-package com.GIDC.app
+package com.ScriptIndia.GIDC_CMS_APP
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import com.GIDC.app.dashboard.AdminDashboardActivity
+import com.ScriptIndia.GIDC_CMS_APP.dashboard.AdminDashboardActivity
 
 class SplashActivity : AppCompatActivity() {
 

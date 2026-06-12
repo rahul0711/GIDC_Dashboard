@@ -1,10 +1,10 @@
-package com.GIDC.app.dashboard
+package com.ScriptIndia.GIDC_CMS_APP.dashboard
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import com.GIDC.app.dashboard.HeadDashboardActivity.ViewMode
+import com.ScriptIndia.GIDC_CMS_APP.dashboard.HeadDashboardActivity.ViewMode
 import kotlin.math.pow
 
 /**

@@ -1,4 +1,4 @@
-package com.GIDC.app.settings
+package com.ScriptIndia.GIDC_CMS_APP.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.GIDC.app.LoginActivity
-import com.GIDC.app.R
+import com.ScriptIndia.GIDC_CMS_APP.LoginActivity
+import com.ScriptIndia.GIDC_CMS_APP.R
 import com.google.android.material.button.MaterialButton
 
 class LogoutActivity : AppCompatActivity() {

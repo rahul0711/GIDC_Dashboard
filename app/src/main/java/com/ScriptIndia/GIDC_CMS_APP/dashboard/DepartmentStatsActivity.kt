@@ -1,4 +1,4 @@
-package com.GIDC.app.dashboard
+package com.ScriptIndia.GIDC_CMS_APP.dashboard
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -10,9 +10,9 @@ import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.GIDC.app.R
-import com.GIDC.app.api.RetrofitClient
-import com.GIDC.app.settings.LogoutActivity
+import com.ScriptIndia.GIDC_CMS_APP.R
+import com.ScriptIndia.GIDC_CMS_APP.api.RetrofitClient
+import com.ScriptIndia.GIDC_CMS_APP.settings.LogoutActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.*
@@ -49,15 +49,6 @@ class DepartmentStatsActivity : AppCompatActivity() {
         val roleLower = role.trim().lowercase()
 
         when {
-            roleLower.contains("engineer") || roleLower.contains("head") -> {
-                showCards(
-                    showResolved      = true,
-                    showReLaunched    = true,
-                    showApproved      = true,
-                    showTimeAlerts    = true
-                )
-                fetchStats()
-            }
             roleLower.contains("admin") -> {
                 showCards(
                     showResolved      = false,
@@ -76,12 +67,12 @@ class DepartmentStatsActivity : AppCompatActivity() {
                 )
                 fetchStats()
             }
-            else -> {
+            else -> { // Department Head and Department Engineer fallback
                 showCards(
                     showResolved      = true,
-                    showReLaunched    = false,
-                    showApproved      = false,
-                    showTimeAlerts    = false
+                    showReLaunched    = true,
+                    showApproved      = true,
+                    showTimeAlerts    = true
                 )
                 fetchStats()
             }

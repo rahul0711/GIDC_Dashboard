@@ -4,27 +4,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
     android:layout_marginTop="6dp"
     android:layout_marginBottom="6dp"
     android:clickable="true"
     android:focusable="true"
     app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="3dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="1dp"
     app:rippleColor="#1A0B3D91"
-    app:strokeWidth="0dp">
+    app:strokeColor="#E4EAF5"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:gravity="center_vertical"
+        android:minHeight="96dp"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="12dp">
 
         <!--
             DEPARTMENT ICON
@@ -36,14 +36,21 @@
             Icon tint is set to brand blue (#0B3D91)
             ─────────────────────────────────────────────────
         -->
-        <ImageView
-            android:id="@+id/ivDeptIcon"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:src="@drawable/logo"
-            android:contentDescription="Department Icon"
-            android:scaleType="fitCenter"
-            app:tint="@null"/>
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_department_icon_tile">
+
+            <ImageView
+                android:id="@+id/ivDeptIcon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:contentDescription="Department Icon"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo"
+                app:tint="@null" />
+        </FrameLayout>
 
         <!--
             DEPARTMENT NAME
@@ -52,29 +59,45 @@
                 holder.binding.tvDeptName.text = dept.name
             ─────────────────────────────────────────────────
         -->
-        <TextView
-            android:id="@+id/tvDeptName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Street Light Department"
-            android:textColor="#0B1F4B"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-medium" />
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <!--
-            NOT RESOLVED COUNT
-            ─────────────────────────────────────────────────
-            Set dynamically:
-                holder.binding.tvNotResolved.text =
-                    "( Not Resolved -${dept.unresolvedCount})"
-            ─────────────────────────────────────────────────
-        -->
+            <TextView
+                android:id="@+id/tvDeptName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
+                android:text="Street Light Department"
+                android:textColor="#223A65"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/tvDeptSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Manage street light related complaints and services"
+                android:textColor="#7C8EA9"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/bg_department_arrow_circle"
+            android:contentDescription="Open department"
+            android:padding="9dp"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="#2E78F6" />
 
     </LinearLayout>
 

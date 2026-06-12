@@ -1,14 +1,14 @@
-package com.GIDC.app.api
+package com.ScriptIndia.GIDC_CMS_APP.api
 
-import com.GIDC.app.model.ApprovedResolvedComplainRequest
-import com.GIDC.app.model.ApprovedResolvedComplainResponse
-import com.GIDC.app.model.ComplaintModel
-import com.GIDC.app.model.DailyCountResponse
-import com.GIDC.app.model.DepartmentStats
-import com.GIDC.app.model.LoginRequest
-import com.GIDC.app.model.LoginResponse
-import com.GIDC.app.model.UpdateComplainRequest
-import com.GIDC.app.model.UpdateComplainResponse
+import com.ScriptIndia.GIDC_CMS_APP.model.ApprovedResolvedComplainRequest
+import com.ScriptIndia.GIDC_CMS_APP.model.ApprovedResolvedComplainResponse
+import com.ScriptIndia.GIDC_CMS_APP.model.ComplaintModel
+import com.ScriptIndia.GIDC_CMS_APP.model.DailyCountResponse
+import com.ScriptIndia.GIDC_CMS_APP.model.DepartmentStats
+import com.ScriptIndia.GIDC_CMS_APP.model.LoginRequest
+import com.ScriptIndia.GIDC_CMS_APP.model.LoginResponse
+import com.ScriptIndia.GIDC_CMS_APP.model.UpdateComplainRequest
+import com.ScriptIndia.GIDC_CMS_APP.model.UpdateComplainResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response

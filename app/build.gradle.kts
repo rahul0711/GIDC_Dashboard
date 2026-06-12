@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mygidc"
+    namespace = "com.ScriptIndia.GIDC_CMS_APP"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -11,11 +11,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.mygidc"
+        applicationId = "com.ScriptIndia.GIDC_CMS_APP"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

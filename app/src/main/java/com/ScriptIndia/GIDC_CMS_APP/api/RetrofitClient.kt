@@ -1,4 +1,4 @@
-package com.GIDC.app.api
+package com.ScriptIndia.GIDC_CMS_APP.api
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

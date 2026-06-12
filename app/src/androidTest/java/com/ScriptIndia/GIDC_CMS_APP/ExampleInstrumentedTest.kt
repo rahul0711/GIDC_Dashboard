@@ -1,4 +1,4 @@
-package com.GIDC.app
+package com.ScriptIndia.GIDC_CMS_APP
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
