@@ -84,6 +84,34 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnViewAll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="View All"
+                        android:textColor="#0B3D91"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:visibility="gone"
+                        app:backgroundTint="#FFFFFF"
+                        app:cornerRadius="18dp"
+                        app:icon="@drawable/ic_visibility"
+                        app:iconTint="#0B3D91"
+                        app:iconSize="14dp"
+                        app:iconPadding="6dp"
+                        app:rippleColor="#260B3D91"
+                        app:strokeColor="#B3D1FF"
+                        app:strokeWidth="1dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/tvSubtitle"
+                        app:layout_constraintTop_toTopOf="@id/tvTitle" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
@@ -287,5 +315,14 @@
         android:scrollbarSize="4dp"
         android:scrollbarStyle="insideInset"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <!-- Loading ProgressBar -->
+    <ProgressBar
+        android:id="@+id/progressList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="#0B3D91"
+        android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

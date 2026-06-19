@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import android.view.View
 import android.widget.TextView
+import android.widget.ProgressBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ScriptIndia.GIDC_CMS_APP.R
 import com.ScriptIndia.GIDC_CMS_APP.api.RetrofitClient
+import com.ScriptIndia.GIDC_CMS_APP.model.Department
+import com.ScriptIndia.GIDC_CMS_APP.model.ComplaintModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
@@ -27,6 +30,8 @@ class ComplaintListActivity : AppCompatActivity() {
     private lateinit var adapter: ComplaintAdapter
     private lateinit var btnPickDate: MaterialButton
     private lateinit var btnClearDate: MaterialButton
+    private lateinit var btnViewAll: MaterialButton
+    private lateinit var progressList: ProgressBar
 
     private val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
@@ -35,7 +40,10 @@ class ComplaintListActivity : AppCompatActivity() {
     private var agencyId: Int = 0
     private lateinit var role: String
     private lateinit var source: String
+    private var departmentList: List<Department> = emptyList()
     private var anyUpdateHappened: Boolean = false
+    private var allFetchedComplaints: List<ComplaintModel> = emptyList()
+    private var isViewAllClicked = false
 
     private val detailLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -59,6 +67,12 @@ class ComplaintListActivity : AppCompatActivity() {
         source = intent.getStringExtra("source")
             ?: ComplaintDetailActivity.SOURCE_STATUS
 
+        val deptsJson = intent.getStringExtra("departments")
+        if (deptsJson != null) {
+            val type = object : com.google.gson.reflect.TypeToken<List<Department>>() {}.type
+            departmentList = com.google.gson.Gson().fromJson(deptsJson, type) ?: emptyList()
+        }
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -73,6 +87,29 @@ class ComplaintListActivity : AppCompatActivity() {
 
         btnPickDate  = findViewById(R.id.btnPickDate)
         btnClearDate = findViewById(R.id.btnClearDate)
+        btnViewAll   = findViewById(R.id.btnViewAll)
+        progressList = findViewById(R.id.progressList)
+
+        val isFromDashboard = intent.getBooleanExtra("is_from_dashboard", false)
+        btnViewAll.visibility = if (isFromDashboard && !isViewAllClicked) View.VISIBLE else View.GONE
+
+        btnViewAll.setOnClickListener {
+            if (!::adapter.isInitialized) return@setOnClickListener
+            isViewAllClicked = true
+
+            adapter.filterByDateRange(null)
+            btnPickDate.text = "📅 Pick Date"
+            btnClearDate.visibility = View.GONE
+            adapter.filterByDate(null)
+
+            findViewById<TextInputEditText>(R.id.etSearch).setText("")
+            adapter.filterById("")
+
+            findViewById<TextView>(R.id.tvSubtitle).text = "Loading..."
+            btnViewAll.visibility = View.GONE
+
+            fetchComplaints(rawStatus, departmentId, agencyId, role, source)
+        }
 
         fetchComplaints(rawStatus, departmentId, agencyId, role, source)
     }
@@ -104,64 +141,137 @@ class ComplaintListActivity : AppCompatActivity() {
         val isAgency  = roleLower == "agency" || roleLower.contains("agency")
 
         CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                progressList.visibility = View.VISIBLE
+            }
             try {
-                val response = when {
-                    // Alert / resolve counts → department-alert endpoint (unchanged)
-                    status == "alertCount" || status == "resolveCount" ->
-                        RetrofitClient.api.getComplaintsByDepartment(departmentId)
-
-                    // Agency → existing agency+status endpoint
-                    isAgency ->
-                        RetrofitClient.api.getComplaintsByAgencyStatus(
-                            agencyId,
-                            normalizeStatusForApi(status)
-                        )
-
-                    // Admin / Engineer / Head → new department+status endpoint
-                    else ->
-                        RetrofitClient.api.getComplaintsByDepartmentStatus(
-                            departmentId,
-                            normalizeStatusForApi(status)
-                        )
-                }
-
-                if (response.isSuccessful) {
-                    val list = response.body() ?: emptyList()
-
-                    // Default sort → latest first
-                    val sortedList = list.sortedByDescending { parseDateSafe(it.callStartTime) }
-
-                    withContext(Dispatchers.Main) {
-                        findViewById<TextView>(R.id.tvSubtitle).text =
-                            "Showing ${sortedList.size} complaints"
-
-                        if (::adapter.isInitialized) {
-                            adapter.updateData(sortedList)
-                        } else {
-                            adapter = ComplaintAdapter(
-                                sortedList.toMutableList(),
-                                role,
-                                status,
-                                source
-                            ) { item ->
-                                val intent = Intent(this@ComplaintListActivity, ComplaintDetailActivity::class.java).apply {
-                                    putExtra("complaint", com.google.gson.Gson().toJson(item))
-                                    putExtra("role", role)
-                                    putExtra("status", status)
-                                    putExtra("source", source)
+                val list = if (status.equals("Complaints", ignoreCase = true) || status.equals("all", ignoreCase = true)) {
+                    val allStatuses = listOf("New", "In Process", "Hold", "Resolved", "Cancel", "ReLaunched", "Approved")
+                    val deferreds = allStatuses.map { st ->
+                        async(Dispatchers.IO) {
+                            try {
+                                val resp = when {
+                                    isAgency -> RetrofitClient.api.getComplaintsByAgencyStatus(agencyId, st)
+                                    departmentId == 0 && departmentList.isNotEmpty() -> {
+                                        val deptDeferreds = departmentList.map { dept ->
+                                            async(Dispatchers.IO) {
+                                                try {
+                                                    val r = RetrofitClient.api.getComplaintsByDepartmentStatus(dept.departmentId, st)
+                                                    if (r.isSuccessful) r.body().orEmpty() else emptyList()
+                                                } catch (_: Exception) {
+                                                    emptyList()
+                                                }
+                                            }
+                                        }
+                                        val combined = deptDeferreds.awaitAll().flatten()
+                                        retrofit2.Response.success(combined)
+                                    }
+                                    else -> RetrofitClient.api.getComplaintsByDepartmentStatus(departmentId, st)
                                 }
-                                detailLauncher.launch(intent)
+                                if (resp.isSuccessful) resp.body().orEmpty() else emptyList()
+                            } catch (e: Exception) {
+                                Log.e("ComplaintList", "Failed to fetch status $st: ${e.message}")
+                                emptyList()
                             }
-                            recyclerView.adapter = adapter
-                            setupControls()
                         }
                     }
+                    deferreds.awaitAll().flatten().distinctBy { it.complainFormID }
                 } else {
-                    showError("Failed: ${response.code()}")
+                    val response = when {
+                        status == "alertCount" || status == "resolveCount" ->
+                            RetrofitClient.api.getComplaintsByDepartment(departmentId)
+                        isAgency ->
+                            RetrofitClient.api.getComplaintsByAgencyStatus(
+                                agencyId,
+                                normalizeStatusForApi(status)
+                            )
+                        departmentId == 0 && departmentList.isNotEmpty() -> {
+                            val deptDeferreds = departmentList.map { dept ->
+                                async(Dispatchers.IO) {
+                                    try {
+                                        val r = RetrofitClient.api.getComplaintsByDepartmentStatus(dept.departmentId, normalizeStatusForApi(status))
+                                        if (r.isSuccessful) r.body().orEmpty() else emptyList()
+                                    } catch (_: Exception) {
+                                        emptyList()
+                                    }
+                                }
+                            }
+                            val combinedList = deptDeferreds.awaitAll().flatten().distinctBy { it.complainFormID }
+                            retrofit2.Response.success(combinedList)
+                        }
+                        else ->
+                            RetrofitClient.api.getComplaintsByDepartmentStatus(
+                                departmentId,
+                                normalizeStatusForApi(status)
+                            )
+                    }
+                    if (response.isSuccessful) response.body().orEmpty() else throw Exception("HTTP ${response.code()}")
                 }
 
+                // Default sort → latest first
+                val rawSortedList = list.sortedByDescending { parseDateSafe(it.callStartTime) }
+                allFetchedComplaints = rawSortedList
+
+                var sortedList = rawSortedList
+
+                if (!isViewAllClicked) {
+                    // Apply Subtype and Area filters if passed from Admin Dashboard
+                    val subtype = intent.getStringExtra("subtype")
+                    val area = intent.getStringExtra("area")
+                    
+                    if (subtype != null && subtype != "All Complaint Subtypes") {
+                        sortedList = sortedList.filter { it.complainSubType?.trim().equals(subtype, ignoreCase = true) }
+                    }
+                    if (area != null && area != "All Areas") {
+                        sortedList = sortedList.filter { it.complainArea?.trim().equals(area, ignoreCase = true) }
+                    }
+                }
+
+                withContext(Dispatchers.Main) {
+                    progressList.visibility = View.GONE
+                    val dates = intent.getStringArrayListExtra("dates")
+                    // If dates filter is present, filter the display count correctly
+                    val displayList = if (!dates.isNullOrEmpty() && !isViewAllClicked) {
+                        sortedList.filter { item ->
+                            val start = item.callStartTime?.trim() ?: ""
+                            dates.any { start.startsWith(it) }
+                        }
+                    } else {
+                        sortedList
+                    }
+
+                    findViewById<TextView>(R.id.tvSubtitle).text =
+                        "Showing ${displayList.size} complaints"
+
+                    if (::adapter.isInitialized) {
+                        adapter.updateData(sortedList)
+                    } else {
+                        adapter = ComplaintAdapter(
+                            sortedList.toMutableList(),
+                            role,
+                            status,
+                            source
+                        ) { item ->
+                            val intent = Intent(this@ComplaintListActivity, ComplaintDetailActivity::class.java).apply {
+                                putExtra("complaint", com.google.gson.Gson().toJson(item))
+                                putExtra("role", role)
+                                putExtra("status", status)
+                                putExtra("source", source)
+                            }
+                            detailLauncher.launch(intent)
+                        }
+                        if (!dates.isNullOrEmpty() && !isViewAllClicked) {
+                            adapter.filterByDateRange(dates)
+                        }
+                        recyclerView.adapter = adapter
+                        setupControls()
+                    }
+                }
             } catch (e: Exception) {
                 Log.e("ComplaintList", "fetchComplaints error: ${e.message}", e)
+                withContext(Dispatchers.Main) {
+                    progressList.visibility = View.GONE
+                }
                 showError(e.message ?: "Error")
             }
         }

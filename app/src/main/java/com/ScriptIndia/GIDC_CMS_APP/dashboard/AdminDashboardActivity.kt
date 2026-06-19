@@ -146,6 +146,59 @@ class AdminDashboardActivity : AppCompatActivity() {
         setupStaticFilterSpinners()
         loadAdminData()
 
+        val deptsJson = intent.getStringExtra("departments")
+
+        summaryComplaints.setOnClickListener {
+            val datesList = ArrayList(buildDateRange())
+            val intent = Intent(this, ComplaintListActivity::class.java).apply {
+                putExtra("status", "Complaints")
+                putExtra("departmentId", selectedDepartmentId ?: 0)
+                putExtra("agencyId", agencyId)
+                putExtra("role", role)
+                putExtra("subtype", selectedSubType)
+                putExtra("area", selectedArea)
+                putExtra("departments", deptsJson)
+                putStringArrayListExtra("dates", datesList)
+                putExtra("is_from_dashboard", true)
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        summaryApproved.setOnClickListener {
+            val datesList = ArrayList(buildDateRange())
+            val intent = Intent(this, ComplaintListActivity::class.java).apply {
+                putExtra("status", "Approved")
+                putExtra("departmentId", selectedDepartmentId ?: 0)
+                putExtra("agencyId", agencyId)
+                putExtra("role", role)
+                putExtra("subtype", selectedSubType)
+                putExtra("area", selectedArea)
+                putExtra("departments", deptsJson)
+                putStringArrayListExtra("dates", datesList)
+                putExtra("is_from_dashboard", true)
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        summaryCanceled.setOnClickListener {
+            val datesList = ArrayList(buildDateRange())
+            val intent = Intent(this, ComplaintListActivity::class.java).apply {
+                putExtra("status", "Cancel")
+                putExtra("departmentId", selectedDepartmentId ?: 0)
+                putExtra("agencyId", agencyId)
+                putExtra("role", role)
+                putExtra("subtype", selectedSubType)
+                putExtra("area", selectedArea)
+                putExtra("departments", deptsJson)
+                putStringArrayListExtra("dates", datesList)
+                putExtra("is_from_dashboard", true)
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
         findViewById<MaterialButton>(R.id.btnLogout).setOnClickListener { openLogout() }
     }
 

@@ -24,6 +24,7 @@ class ComplaintAdapter(
     private var currentSort: SortOrder = SortOrder.DESC   // ✅ DEFAULT LATEST FIRST
     private var activeIdQuery: String = ""
     private var activeDateFilter: String? = null
+    private var activeDateRangeFilter: List<String>? = null
 
     enum class SortOrder { NONE, ASC, DESC }
 
@@ -74,6 +75,12 @@ class ComplaintAdapter(
         applyFilters()
     }
 
+    // 🔹 FILTER BY DATE RANGE
+    fun filterByDateRange(dates: List<String>?) {
+        activeDateRangeFilter = dates
+        applyFilters()
+    }
+
     // 🔹 MAIN FILTER + SORT ENGINE
     private fun applyFilters() {
         var result = fullList.toMutableList()
@@ -89,6 +96,14 @@ class ComplaintAdapter(
         activeDateFilter?.let { date ->
             result = result.filter {
                 it.callStartTime?.startsWith(date) == true
+            }.toMutableList()
+        }
+
+        // Date range filter
+        activeDateRangeFilter?.let { dates ->
+            result = result.filter { item ->
+                val start = item.callStartTime?.trim() ?: ""
+                dates.any { start.startsWith(it) }
             }.toMutableList()
         }
 

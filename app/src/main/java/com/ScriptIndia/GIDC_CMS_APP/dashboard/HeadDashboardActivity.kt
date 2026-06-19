@@ -159,6 +159,53 @@ class HeadDashboardActivity : AppCompatActivity() {
         setupRangeButtons()
         setupViewModeButtons()
 
+        val deptsJson = intent.getStringExtra("departments")
+
+        summaryComplaints.setOnClickListener {
+            val datesList = ArrayList(buildDateRange(selectedDate, rangeMode))
+            val i = Intent(this, ComplaintListActivity::class.java).apply {
+                putExtra("status", "Complaints")
+                putExtra("departmentId", selectedDeptId)
+                putExtra("agencyId", agencyId)
+                putExtra("role", role)
+                putExtra("departments", deptsJson)
+                putStringArrayListExtra("dates", datesList)
+                putExtra("is_from_dashboard", true)
+            }
+            startActivity(i)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        summaryApproved.setOnClickListener {
+            val datesList = ArrayList(buildDateRange(selectedDate, rangeMode))
+            val i = Intent(this, ComplaintListActivity::class.java).apply {
+                putExtra("status", "Approved")
+                putExtra("departmentId", selectedDeptId)
+                putExtra("agencyId", agencyId)
+                putExtra("role", role)
+                putExtra("departments", deptsJson)
+                putStringArrayListExtra("dates", datesList)
+                putExtra("is_from_dashboard", true)
+            }
+            startActivity(i)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        summaryCanceled.setOnClickListener {
+            val datesList = ArrayList(buildDateRange(selectedDate, rangeMode))
+            val i = Intent(this, ComplaintListActivity::class.java).apply {
+                putExtra("status", "Cancel")
+                putExtra("departmentId", selectedDeptId)
+                putExtra("agencyId", agencyId)
+                putExtra("role", role)
+                putExtra("departments", deptsJson)
+                putStringArrayListExtra("dates", datesList)
+                putExtra("is_from_dashboard", true)
+            }
+            startActivity(i)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
         findViewById<MaterialButton>(R.id.btnLogout).setOnClickListener { openLogout() }
 
     }
