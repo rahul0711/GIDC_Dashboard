@@ -1,5 +1,6 @@
 package com.ScriptIndia.GIDC_CMS_APP.api
 
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -10,6 +11,11 @@ import javax.net.ssl.*
 object RetrofitClient {
 
     private const val BASE_URL = "https://demo.scriptindia.in:8032/"
+
+    // ✅ Lenient Gson: handles plain-text / non-standard server responses
+    private val gson = GsonBuilder()
+        .setLenient()
+        .create()
 
     // ✅ Now public so Coil can reuse it
     val okHttpClient: OkHttpClient by lazy {
@@ -34,7 +40,7 @@ object RetrofitClient {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient) // ✅ reuses same client
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson)) // ✅ lenient
             .build()
             .create(ApiService::class.java)
     }

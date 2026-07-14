@@ -11,6 +11,7 @@ import com.ScriptIndia.GIDC_CMS_APP.model.UpdateComplainRequest
 import com.ScriptIndia.GIDC_CMS_APP.model.UpdateComplainResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -75,7 +76,7 @@ interface ApiService {
         @Part("ComplainSpecialNotes") complainSpecialNotes: RequestBody,
         @Part complainResolvedImage: MultipartBody.Part?,
         @Part ComplainBeforeImage:MultipartBody.Part?
-    ): Response<UpdateComplainResponse>
+    ): Response<ResponseBody>
 
     // ✔️ Approve / Resolve Complaint (Engineer/Head only)
     @POST("API/MobileApp/ApprovedResolvedComplainId")
@@ -106,3 +107,9 @@ interface ApiService {
 
 
 }
+
+
+
+
+
+

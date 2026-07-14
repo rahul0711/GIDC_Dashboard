@@ -758,11 +758,6 @@ class ComplaintDetailActivity : AppCompatActivity() {
             val selectedStatus = spinner?.selectedItem?.toString() ?: "Hold"
             val notes          = etNotes?.text?.toString()?.trim() ?: ""
             val agencyId       = item.agencyId?.takeIf { it.isNotEmpty() } ?: "23"
-            if (notes.isEmpty()) {
-                Toast.makeText(this, "Please enter notes before updating", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
             if (shouldRequireImage(selectedStatus) && selectedResolvedImageUri == null) {
                 Toast.makeText(this, "Please upload image for $selectedStatus", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
