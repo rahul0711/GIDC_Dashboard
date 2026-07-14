@@ -27,68 +27,50 @@
         <!-- ═══════════════════════════════════════════════════ -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="124dp"
-            android:background="#0A2E6E">
+            android:layout_height="wrap_content"
+            android:background="#0B3D91"
+            android:paddingBottom="24dp">
 
-            <View
-                android:id="@+id/accentStrip"
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="#F4C430"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="28dp"
+                android:background="@android:color/transparent"
+                app:navigationIconTint="#FFFFFF"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:id="@+id/headerContent"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/header_gradient"
-                android:orientation="vertical"
-                android:paddingStart="20dp"
-                android:paddingTop="18dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="18dp"
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Complaint Details"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/toolbar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/toolbar"
+                app:layout_constraintTop_toTopOf="@id/toolbar" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="sans-serif"
+                android:text="Review the details and update status when needed."
+                android:textColor="#A2BCE0"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@android:color/transparent"
-                        app:navigationIconTint="#FFFFFF" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif-medium"
-                        android:letterSpacing="0.02"
-                        android:text="Complaint Details"
-                        android:textColor="#FFFFFF"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Review the details and update status when needed."
-                    android:textColor="#BCD1F0"
-                    android:textSize="13sp" />
-
-
-            </LinearLayout>
+                app:layout_constraintStart_toStartOf="@id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -301,17 +283,7 @@
 
                         <!-- AGENCY ID (Admin) — always visible -->
                         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F2F8"/>
-                        <LinearLayout
-                            android:id="@+id/rowAdminAgencyId"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:visibility="visible">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AGENCY ID" android:textColor="#9AAAC4" android:textSize="10sp" android:letterSpacing="0.1" android:textStyle="bold" />
-                            <TextView android:id="@+id/tvAdminAgencyId" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#0A2E6E" android:textSize="14sp" android:textStyle="bold" android:fontFamily="monospace" android:layout_marginTop="3dp" />
-                        </LinearLayout>
+
 
                         <!-- AGENCY NAME (Admin) — always visible -->
                         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#F0F2F8"/>

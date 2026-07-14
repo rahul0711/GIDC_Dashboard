@@ -20,122 +20,107 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0A2E6E">
+        android:background="#0B3D91">
 
-        <!-- Gold accent strip top -->
-        <View
-            android:id="@+id/headerAccent"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="#F4C430"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/headerBody"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/header_gradient"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingStart="20dp"
-            android:paddingTop="44dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="28dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="52dp"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="sans-serif-medium"
+            android:lineSpacingExtra="4dp"
+            android:text="Department&#10;Stats"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btnLogout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerAccent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#26FFFFFF"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="14dp"
+            android:text="Logout"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:cornerRadius="20dp"
+            app:icon="@drawable/ic_logout"
+            app:iconTint="#FFFFFF"
+            app:iconSize="18dp"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:strokeColor="#66FFFFFF"
+            app:strokeWidth="1dp"
+            app:rippleColor="#33FFFFFF"
+            app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvTitle" />
 
-                <TextView
-                    android:id="@+id/tvTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="start"
-                    android:letterSpacing="0.01"
-                    android:text="Department Stats"
-                    android:textColor="#FFFFFF"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="sans-serif"
+            android:text="Tap a card to view complaints"
+            android:textColor="#A2BCE0"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnLogout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:backgroundTint="#26FFFFFF"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="14dp"
-                    android:text="Logout"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="20dp"
-                    app:icon="@drawable/ic_logout"
-                    app:iconTint="#FFFFFF"
-                    app:iconSize="18dp"
-                    app:iconGravity="textStart"
-                    app:iconPadding="8dp"
-                    app:strokeColor="#66FFFFFF"
-                    app:strokeWidth="1dp"
-                    app:rippleColor="#33FFFFFF" />
+        <!-- Gold LIVE badge -->
+        <LinearLayout
+            android:id="@+id/liveBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="14dp"
+            android:background="#F4C430"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvSubtitle">
 
-
-            </LinearLayout>
+            <View
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginEnd="7dp"
+                android:background="#0A2E6E" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp"
-                android:text="Tap a card to view complaints"
-                android:textColor="#CFE0FF"
-                android:textSize="13sp" />
-
-            <!-- Gold LIVE badge -->
-            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:background="#F4C430"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp">
-
-                <View
-                    android:layout_width="7dp"
-                    android:layout_height="7dp"
-                    android:layout_marginEnd="7dp"
-                    android:background="#0A2E6E" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:letterSpacing="0.12"
-                    android:text="LIVE OVERVIEW"
-                    android:textColor="#0A2E6E"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.12"
+                android:text="LIVE OVERVIEW"
+                android:textColor="#0A2E6E"
+                android:textSize="10sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Bottom strip for page background bleed -->
         <View
+            android:id="@+id/bleedView"
             android:layout_width="match_parent"
             android:layout_height="18dp"
+            android:layout_marginTop="24dp"
             android:background="#EEF2FB"
-            app:layout_constraintTop_toBottomOf="@id/headerBody"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/liveBadge" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

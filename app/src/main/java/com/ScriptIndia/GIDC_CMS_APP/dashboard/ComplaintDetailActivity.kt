@@ -421,9 +421,9 @@ class ComplaintDetailActivity : AppCompatActivity() {
         setText(R.id.tvAdminPriority,    item.complainPriority     ?: "-")
         setText(R.id.tvAdminStatus,      item.status               ?: "-")
 
-        setText(R.id.tvAdminAgencyId, item.agencyId ?: "-")
+//        setText(R.id.tvAdminAgencyId, item.agencyId ?: "-")
         setText(R.id.tvAdminAgency,   item.agency   ?: "Not Assigned")
-        findViewById<View>(R.id.rowAdminAgencyId)?.visibility = View.VISIBLE
+//        findViewById<View>(R.id.rowAdminAgencyId)?.visibility = View.VISIBLE
         findViewById<View>(R.id.rowAdminAgency)?.visibility   = View.VISIBLE
 
         bindResolvedPhotoForAdmin(item)
