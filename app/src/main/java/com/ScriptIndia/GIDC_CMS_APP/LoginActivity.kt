@@ -1,6 +1,7 @@
 package com.ScriptIndia.GIDC_CMS_APP
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
@@ -46,6 +47,11 @@ class LoginActivity : AppCompatActivity() {
             }
 
             loginUser(username, password)
+        }
+
+        findViewById<ImageView>(R.id.imgFooterLogo).setOnClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://scriptindia.in/"))
+            startActivity(browserIntent)
         }
     }
 

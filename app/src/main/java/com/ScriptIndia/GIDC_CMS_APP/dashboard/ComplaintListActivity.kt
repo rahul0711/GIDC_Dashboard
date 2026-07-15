@@ -79,7 +79,12 @@ class ComplaintListActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.setNavigationOnClickListener { finishWithResultIfNeeded() }
 
-        findViewById<TextView>(R.id.tvTitle).text    = rawStatus
+        val displayTitle = when (rawStatus.trim()) {
+            "alertCount" -> "Alert"
+            "resolveCount" -> "Not Resolved"
+            else -> rawStatus
+        }
+        findViewById<TextView>(R.id.tvTitle).text    = displayTitle
         findViewById<TextView>(R.id.tvSubtitle).text = "Loading..."
 
         recyclerView = findViewById(R.id.recyclerView)

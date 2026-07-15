@@ -10,123 +10,87 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:elevation="0dp">
+        android:background="#0B3D91"
+        app:elevation="4dp">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <!-- Toolbar Redesign -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:contentScrim="#0B3D91"
-            app:titleEnabled="false">
+            android:layout_height="64dp"
+            android:background="@drawable/header_gradient"
+            app:navigationIconTint="#FFFFFF"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="192dp"
-                android:background="#0B3D91"
-                android:paddingBottom="24dp"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.7">
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp">
 
-                <!-- Small label pill -->
-                <TextView
-                    android:id="@+id/tvPill"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="52dp"
-                    android:background="@drawable/pill_white_outline"
-                    android:letterSpacing="0.15"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:text="COMPLAINTS"
-                    android:textColor="#FFFFFF"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <!-- Title -->
-                <TextView
-                    android:id="@+id/tvTitle"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="12dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="All Complaints"
-                    android:textColor="#FFFFFF"
-                    android:textSize="32sp"
-                    android:textStyle="bold"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/btnViewAll"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvPill" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <!-- Subtitle -->
-                <TextView
-                    android:id="@+id/tvSubtitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="24dp"
-                    android:fontFamily="sans-serif"
-                    android:text="Loading..."
-                    android:textColor="#A2BCE0"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+                    <TextView
+                        android:id="@+id/tvTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:singleLine="true"
+                        android:text="All Complaints"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-                <!-- Material Button View All -->
+                    <TextView
+                        android:id="@+id/tvSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif"
+                        android:singleLine="true"
+                        android:text="Loading..."
+                        android:textColor="#A2BCE0"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnViewAll"
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_height="32dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:letterSpacing="0.02"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
                     android:text="View All"
                     android:textColor="#0B3D91"
                     android:textSize="11sp"
                     android:textStyle="bold"
-                    android:letterSpacing="0.05"
-                    android:paddingStart="14dp"
-                    android:paddingEnd="14dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
                     android:visibility="gone"
                     app:backgroundTint="#FFFFFF"
-                    app:cornerRadius="18dp"
+                    app:cornerRadius="16dp"
                     app:icon="@drawable/ic_visibility"
+                    app:iconPadding="4dp"
+                    app:iconSize="12dp"
                     app:iconTint="#0B3D91"
-                    app:iconSize="14dp"
-                    app:iconPadding="6dp"
-                    app:rippleColor="#260B3D91"
-                    app:strokeColor="#B3D1FF"
-                    app:strokeWidth="1dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/tvTitle"
-                    app:layout_constraintTop_toTopOf="@id/tvTitle" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:rippleColor="#260B3D91" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Pinned Toolbar -->
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:navigationIconTint="#FFFFFF"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        </androidx.appcompat.widget.Toolbar>
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        <!-- ══════════════════════════════════════ -->
-        <!-- SEARCH + FILTER BAR                    -->
-        <!-- ══════════════════════════════════════ -->
+        <!-- Redesigned Search & Filter Panel (under the Toolbar) -->
         <LinearLayout
             android:id="@+id/topControls"
             android:layout_width="match_parent"
@@ -138,37 +102,36 @@
             android:paddingEnd="16dp"
             android:paddingBottom="12dp">
 
-            <!-- Search Card -->
+            <!-- Search Card capsule -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:layout_marginBottom="8dp"
                 app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="3dp">
+                app:cardCornerRadius="22dp"
+                app:cardElevation="2dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="#FFFFFF"
-                    app:boxStrokeColor="@android:color/transparent"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="0dp"
-                    app:hintTextColor="#0B3D91"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundMode="none"
+                    app:hintEnabled="false"
                     app:startIconDrawable="@android:drawable/ic_menu_search"
                     app:startIconTint="#0B3D91">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etSearch"
                         android:layout_width="match_parent"
-                        android:layout_height="52dp"
+                        android:layout_height="match_parent"
                         android:background="@android:color/transparent"
                         android:hint="Search by Complaint ID..."
                         android:inputType="number"
-                        android:paddingStart="4dp"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="0dp"
+                        android:paddingStart="0dp"
                         android:textColor="#1A1A1A"
-                        android:textColorHint="#BDBDBD"
+                        android:textColorHint="#99A2B3"
                         android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -179,125 +142,110 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
                 android:fontFamily="sans-serif"
                 android:text="Tip: search by ID, or filter by date and sort."
                 android:textColor="#7D8AA4"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
-            <!-- Filter Row -->
-            <LinearLayout
+            <!-- Horizontal Scrollable Filter Row to support all screen widths -->
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:scrollbars="none"
+                android:overScrollMode="never">
 
-                <!-- Date picker button -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="2dp">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp">
 
+                    <!-- Date picker button -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnPickDate"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
                         android:text="Pick date"
                         android:textColor="#0B3D91"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        app:rippleColor="#1A0B3D91" />
+                        app:backgroundTint="#FFFFFF"
+                        app:cornerRadius="18dp"
+                        app:rippleColor="#1A0B3D91"
+                        app:strokeColor="#B3D1FF"
+                        app:strokeWidth="1dp" />
 
-                </androidx.cardview.widget.CardView>
-
-                <!-- Clear date -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardClearDate"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:visibility="gone"
-                    app:cardBackgroundColor="#FFF3F3"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="2dp">
-
+                    <!-- Clear date -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnClearDate"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
+                        android:padding="0dp"
                         android:text="✕"
                         android:textColor="#CC0000"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:textStyle="bold"
-                        app:rippleColor="#1ACC0000" />
+                        android:visibility="gone"
+                        app:backgroundTint="#FFF3F3"
+                        app:cornerRadius="18dp"
+                        app:rippleColor="#1ACC0000"
+                        app:strokeColor="#FFCCCC"
+                        app:strokeWidth="1dp" />
 
-                </androidx.cardview.widget.CardView>
-
-                <!-- Sort ASC -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="2dp">
-
+                    <!-- Sort ASC -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnAsc"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="14dp"
                         android:text="Oldest"
                         android:textColor="#0B3D91"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        app:rippleColor="#1A0B3D91" />
+                        app:backgroundTint="#FFFFFF"
+                        app:cornerRadius="18dp"
+                        app:rippleColor="#1A0B3D91"
+                        app:strokeColor="#B3D1FF"
+                        app:strokeWidth="1dp" />
 
-                </androidx.cardview.widget.CardView>
-
-                <!-- Sort DESC -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="2dp">
-
+                    <!-- Sort DESC -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnDesc"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="36dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="14dp"
                         android:text="Newest"
                         android:textColor="#0B3D91"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        app:rippleColor="#1A0B3D91" />
+                        app:backgroundTint="#FFFFFF"
+                        app:cornerRadius="18dp"
+                        app:rippleColor="#1A0B3D91"
+                        app:strokeColor="#B3D1FF"
+                        app:strokeWidth="1dp" />
 
-                </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
-            </LinearLayout>
+            </HorizontalScrollView>
 
         </LinearLayout>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- RecyclerView -->

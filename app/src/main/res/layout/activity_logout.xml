@@ -94,20 +94,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
-                            android:text="—"
+                           
                             android:textColor="#0D1B3E"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tvDepartment"
+                            android:id="@+id/tvUserType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="2dp"
                             android:fontFamily="sans-serif"
-                            android:text="—"
-                            android:textColor="#8898AA"
-                            android:textSize="13sp" />
+                            
+                            android:textColor="#5C6B89"
+                            android:textSize="13sp"
+                            android:textStyle="italic" />
+
+                       
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -202,30 +205,31 @@
                 android:visibility="gone" />
 
             <!-- App info -->
-            <LinearLayout
-                android:layout_width="match_parent"
+             <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tvAppVersion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:text="GIDC Authority App  ·  v1.0.0"
-                    android:textColor="#C4CFD8"
-                    android:textSize="12sp" />
+                    android:text="Designed &amp; Developed by "
+                    android:textColor="#5E6E82"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvCreatedBy"
+                <ImageView
+                    android:id="@+id/imgFooterLogo"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:fontFamily="sans-serif"
-                    android:text="Created by Script India"
-                    android:textColor="#C4CFD8"
-                    android:textSize="12sp" />
+                    android:layout_height="42dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/appstore"
+                    android:contentDescription="Script India Logo" />
+
             </LinearLayout>
 
         </LinearLayout>

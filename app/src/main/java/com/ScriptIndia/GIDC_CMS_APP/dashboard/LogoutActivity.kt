@@ -1,8 +1,10 @@
 package com.ScriptIndia.GIDC_CMS_APP.settings
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -22,6 +24,11 @@ class LogoutActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btnLogout).setOnClickListener {
             showLogoutConfirmation()
+        }
+
+        findViewById<ImageView>(R.id.imgFooterLogo).setOnClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://scriptindia.in/"))
+            startActivity(browserIntent)
         }
     }
 
@@ -54,11 +61,12 @@ class LogoutActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
         val userName = prefs.getString("userName", null)?.trim().orEmpty()
         val department = prefs.getString("departmentName", null)?.trim().orEmpty()
+        val role = prefs.getString("role", null)?.trim() ?: intent.getStringExtra("role")
 
-        val displayName = userName.ifEmpty { formatRole(intent.getStringExtra("role")) }
+        val displayName = userName.ifEmpty { formatRole(role) }
         findViewById<TextView>(R.id.tvUserName).text = displayName
-        findViewById<TextView>(R.id.tvDepartment).text =
-            department.ifEmpty { "—" }
+        findViewById<TextView>(R.id.tvUserType).text = formatRole(role)
+       
 
         val initialsSource = userName.ifEmpty { displayName }
         val initials = initialsSource
