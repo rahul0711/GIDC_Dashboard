@@ -77,6 +77,12 @@ class ComplaintDetailActivity : AppCompatActivity() {
             updateSelectedBeforeImageUi()
         }
 
+    private val pickBeforeImage =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            selectedBeforeImageUri = uri
+            updateSelectedBeforeImageUi()
+        }
+
     companion object {
         const val SOURCE_ALERT_RESOLVE = "alert_resolve"
         const val SOURCE_STATUS        = "status_counter"
@@ -711,11 +717,21 @@ class ComplaintDetailActivity : AppCompatActivity() {
         val rowResolvedImage = findViewById<View>(R.id.rowAgcResolvedImage)
         val rowBeforeImage = findViewById<View>(R.id.rowAgcBeforeImage)
         val btnUploadImage = findViewById<MaterialButton>(R.id.btnAgcUploadImage)
+        val btnGalleryImage = findViewById<MaterialButton>(R.id.btnAgcGalleryImage)
         btnUploadImage?.setOnClickListener {
             launchCameraCapture()
         }
-        findViewById<MaterialButton>(R.id.btnAgcCaptureBeforeImage)?.setOnClickListener {
+        btnGalleryImage?.setOnClickListener {
+            pickResolvedImage.launch("image/*")
+        }
+
+        val btnCaptureBeforeImage = findViewById<MaterialButton>(R.id.btnAgcCaptureBeforeImage)
+        val btnGalleryBeforeImage = findViewById<MaterialButton>(R.id.btnAgcGalleryBeforeImage)
+        btnCaptureBeforeImage?.setOnClickListener {
             launchBeforeCameraCapture()
+        }
+        btnGalleryBeforeImage?.setOnClickListener {
+            pickBeforeImage.launch("image/*")
         }
 
         fun shouldRequireImage(selected: String): Boolean {

@@ -964,24 +964,53 @@
                                     android:paddingBottom="4dp" />
                             </LinearLayout>
 
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnAgcUploadImage"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="52dp"
-                                android:text="Capture Image"
-                                android:textAllCaps="false"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:textColor="#0A2E6E"
-                                app:backgroundTint="#F5F7FF"
-                                app:cornerRadius="14dp"
-                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                                app:strokeColor="#0A2E6E"
-                                app:strokeWidth="1.5dp"
-                                app:icon="@android:drawable/ic_menu_camera"
-                                app:iconGravity="textStart"
-                                app:iconTint="#0A2E6E"
-                                app:iconPadding="10dp" />
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnAgcUploadImage"
+                                    android:layout_width="0dp"
+                                    android:layout_height="52dp"
+                                    android:layout_weight="1"
+                                    android:layout_marginEnd="6dp"
+                                    android:text="Camera"
+                                    android:textAllCaps="false"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#0A2E6E"
+                                    app:backgroundTint="#F5F7FF"
+                                    app:cornerRadius="14dp"
+                                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                    app:strokeColor="#0A2E6E"
+                                    app:strokeWidth="1.5dp"
+                                    app:icon="@android:drawable/ic_menu_camera"
+                                    app:iconGravity="textStart"
+                                    app:iconTint="#0A2E6E"
+                                    app:iconPadding="6dp" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnAgcGalleryImage"
+                                    android:layout_width="0dp"
+                                    android:layout_height="52dp"
+                                    android:layout_weight="1"
+                                    android:layout_marginStart="6dp"
+                                    android:text="Gallery"
+                                    android:textAllCaps="false"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#0A2E6E"
+                                    app:backgroundTint="#F5F7FF"
+                                    app:cornerRadius="14dp"
+                                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                    app:strokeColor="#0A2E6E"
+                                    app:strokeWidth="1.5dp"
+                                    app:icon="@android:drawable/ic_menu_gallery"
+                                    app:iconGravity="textStart"
+                                    app:iconTint="#0A2E6E"
+                                    app:iconPadding="6dp" />
+                            </LinearLayout>
 
                             <TextView
                                 android:id="@+id/tvAgcSelectedImage"
@@ -1030,24 +1059,53 @@
                                     android:paddingBottom="4dp" />
                             </LinearLayout>
 
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnAgcCaptureBeforeImage"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="52dp"
-                                android:text="Capture Before Image"
-                                android:textAllCaps="false"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                android:textColor="#0A2E6E"
-                                app:backgroundTint="#F5F7FF"
-                                app:cornerRadius="14dp"
-                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                                app:strokeColor="#0A2E6E"
-                                app:strokeWidth="1.5dp"
-                                app:icon="@android:drawable/ic_menu_camera"
-                                app:iconGravity="textStart"
-                                app:iconTint="#0A2E6E"
-                                app:iconPadding="10dp" />
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnAgcCaptureBeforeImage"
+                                    android:layout_width="0dp"
+                                    android:layout_height="52dp"
+                                    android:layout_weight="1"
+                                    android:layout_marginEnd="6dp"
+                                    android:text="Camera"
+                                    android:textAllCaps="false"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#0A2E6E"
+                                    app:backgroundTint="#F5F7FF"
+                                    app:cornerRadius="14dp"
+                                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                    app:strokeColor="#0A2E6E"
+                                    app:strokeWidth="1.5dp"
+                                    app:icon="@android:drawable/ic_menu_camera"
+                                    app:iconGravity="textStart"
+                                    app:iconTint="#0A2E6E"
+                                    app:iconPadding="6dp" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnAgcGalleryBeforeImage"
+                                    android:layout_width="0dp"
+                                    android:layout_height="52dp"
+                                    android:layout_weight="1"
+                                    android:layout_marginStart="6dp"
+                                    android:text="Gallery"
+                                    android:textAllCaps="false"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#0A2E6E"
+                                    app:backgroundTint="#F5F7FF"
+                                    app:cornerRadius="14dp"
+                                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                    app:strokeColor="#0A2E6E"
+                                    app:strokeWidth="1.5dp"
+                                    app:icon="@android:drawable/ic_menu_gallery"
+                                    app:iconGravity="textStart"
+                                    app:iconTint="#0A2E6E"
+                                    app:iconPadding="6dp" />
+                            </LinearLayout>
 
                             <TextView
                                 android:id="@+id/tvAgcSelectedBeforeImage"

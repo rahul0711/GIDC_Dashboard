@@ -10,7 +10,7 @@ import javax.net.ssl.*
 
 object RetrofitClient {
 
-    private const val BASE_URL = "https://demo.scriptindia.in:8032/"
+    private const val BASE_URL = "http://gidccms.softyoug.in"
 
     // ✅ Lenient Gson: handles plain-text / non-standard server responses
     private val gson = GsonBuilder()
